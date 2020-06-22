@@ -34,8 +34,7 @@ public class App {
     public static void countWords(String[] arr){
         HashMap<String, Integer> counter = new HashMap<String, Integer>();
         for (String item : arr){
-            Integer value = counter.get(item);
-            counter.put(item, value == null ? 1 : value + 1);
+            counter.put(item, counter.getOrDefault(item,0)+1);
         }
 
         System.out.println("Список уникальных слов:");

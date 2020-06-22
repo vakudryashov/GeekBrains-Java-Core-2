@@ -7,8 +7,7 @@ public class Phonebook {
     private HashMap<String, HashSet<String>> phonebook = new HashMap<>();
 
     public void add(String surname, String number){
-        HashSet<String> numbers = phonebook.get(surname);
-        if (numbers == null) numbers = new HashSet<>();
+        HashSet<String> numbers = phonebook.getOrDefault(surname,new HashSet<>());
         numbers.add(number);
         phonebook.put(surname, numbers);
     }
