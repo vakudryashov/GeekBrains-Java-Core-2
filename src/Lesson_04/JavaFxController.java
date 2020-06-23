@@ -12,8 +12,6 @@ public class JavaFxController implements Initializable {
     TextArea publicFrame;
     @FXML
     TextField userInput;
-    @FXML
-    Button buttonSend;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
