@@ -28,7 +28,7 @@ public class SwingChat extends JFrame {
         );
         bottomContainer.setBorder(BorderFactory.createEmptyBorder(0,2,2,2));
 
-        topContainer.add(publicFrame);
+        topContainer.add(new JScrollPane(publicFrame));
         bottomContainer.add(userInput,BorderLayout.CENTER);
         JButton buttonSend = new JButton("Отправить");
         bottomContainer.add(buttonSend, BorderLayout.EAST);
