@@ -41,6 +41,9 @@ public class Multithreading{
                 e.printStackTrace();
             }
         }
+        for (int i = 0; i < 2; i++) {
+            System.arraycopy(half[i], 0, arr, i * h, h);
+        }
         return System.currentTimeMillis() - time;
     }
 }
