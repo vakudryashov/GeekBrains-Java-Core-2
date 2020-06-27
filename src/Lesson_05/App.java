@@ -9,7 +9,12 @@ public class App{
     public static void main(String[] args) {
         long t1 = oneThreadFill();
         System.out.printf("Обработка массива в одном потоке заняла %d милисекунд\n",t1);
-        long t2 = multiThreadFill();
+        long t2 = 0;
+        try {
+            t2 = multiThreadFill();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.printf("Обработка массива в двух потоках заняла %d милисекунд\n",t2);
         System.out.printf("Второй метод быстрее на %.0f%%",(double)(t1-t2)/t1*100);
 
@@ -24,7 +29,7 @@ public class App{
         return System.currentTimeMillis() - time;
     }
 
-    public static long multiThreadFill(){
+    public static long multiThreadFill() throws InterruptedException {
         float[] arr = new float[size];
         Arrays.fill(arr,1);
 
@@ -37,13 +42,8 @@ public class App{
         Thread thread2 = new Thread(() -> oneThread(a2, h));
         thread1.start();
         thread2.start();
-        while(thread1.isAlive() || thread2.isAlive()) {
-            try {
-                Thread.sleep(1); // если сделать тело цикла пустым, на обработку уходит больше времени
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        thread1.join();
+        thread2.join();
         System.arraycopy(a1, 0, arr, 0, h);
         System.arraycopy(a2, 0, arr, h, h);
         return System.currentTimeMillis() - time;
@@ -55,4 +55,5 @@ public class App{
             arr[i] = (float)(arr[i] * Math.sin(0.2f + j / 5) * Math.cos(0.2f + j / 5) * Math.cos(0.4f + j / 2));
         }
     }
+
 }
