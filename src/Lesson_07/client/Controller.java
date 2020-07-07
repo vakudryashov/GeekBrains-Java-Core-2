@@ -56,9 +56,15 @@ public class Controller implements Initializable {
         if (msg.startsWith("/")) msg = parseUserInput(msg);
         connection.send(userCmd, msg);
         if (userCmd.equals("/exit")){
-            connection.close();
-            Platform.exit();
-            System.exit(0);
+            if (buttonSend.getText().equals("Подключиться")){
+                new Thread(connection::open).start();
+                userInput.setDisable(false);
+                buttonSend.setText("Отправить");
+            }else {
+                connection.close();
+                Platform.exit();
+                System.exit(0);
+            }
         }else {
             userCmd = "/publicMsg";
             Platform.runLater(() -> {
@@ -108,6 +114,13 @@ public class Controller implements Initializable {
             showMessage(msg);
             userCmd = "/password";
             Platform.runLater(()->{ userInputLabel.setText("password:"); });
+        }else if (cmd.equals("/authTimeout")){
+            showMessage("Превышено время ожидания аутентификации");
+            userCmd = "/exit";
+            connection.close();
+            Platform.runLater(()->{ userInputLabel.setText("Отключен"); });
+            userInput.setDisable(true);
+            Platform.runLater(()->{ buttonSend.setText("Подключиться"); });
         }else{
             showMessage(msg);
         }

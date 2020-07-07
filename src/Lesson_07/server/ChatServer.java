@@ -3,6 +3,8 @@ package Lesson_07.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,9 +21,11 @@ public class ChatServer {
 
     public void start() throws IOException {
         ServerSocket serverSocket = new ServerSocket(port);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy hh.mm.ss");
+        System.out.println(format.format(new Date())+" Сервер запущен. Прослушивается порт "+port);
         while(true){
             Socket socket = serverSocket.accept();
-            System.out.println("Соединение установлено");
+            System.out.println(format.format(new Date())+" Соединение установлено c ip: "+socket.getInetAddress());
             new Connection(this, socket);
         }
     }

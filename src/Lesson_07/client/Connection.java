@@ -81,7 +81,6 @@ public class Connection implements Closeable {
         String[] part = msg.split(" ", 2);
         String cmd = part[0];
         String text = part.length>1 ? part[1] : "";
-        System.out.println("Сообщение содержит команду: "+cmd);
         if (cmd.equals("/accessDeny")){
             nick = null;
         }else if (cmd.equals("/requestNickname") && nick != null){

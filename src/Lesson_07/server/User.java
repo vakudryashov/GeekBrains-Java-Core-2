@@ -59,7 +59,6 @@ public class User {
             scanner.useDelimiter(System.lineSeparator());
             while (scanner.hasNext()){
                 String[] part = scanner.nextLine().split(" :: ");
-                System.out.println(Arrays.toString(part));
                 if (part[0].equals(nick)){
                     password = part[1];
                     result = true;

@@ -2,6 +2,7 @@ package Lesson_07.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -25,11 +26,12 @@ public class Connection {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             getUser();
+            new Thread(this::waitAuth).start();
             while (true) {
                 String msg = in.readUTF();
                 handleMessage(msg);
             }
-        }catch(EOFException eofException){
+        }catch(EOFException | SocketException eofException){
         }catch(IOException e){
             e.printStackTrace();
         }finally {
@@ -70,6 +72,25 @@ public class Connection {
             e.printStackTrace();
         }
         isOutBufferBusy = false;
+    }
+
+    public void waitAuth(){
+        long countDown = 120;
+        boolean userAuthenticated;
+        do{
+            userAuthenticated = user != null && ChatServer.userList.containsKey(user.nick);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }while(countDown-- > 0 && !userAuthenticated);
+
+        if (!userAuthenticated){
+            send("/authTimeout");
+            if (user !=  null) user.die();
+            close(in,out,socket);
+        }
     }
 
 
